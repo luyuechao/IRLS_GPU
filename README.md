@@ -1,4 +1,4 @@
-# LRLS_CUDA
+# IRLS_CUDA
 
 CUDA implementation of solving L1 norm of Ax-b by Iteratively Reweighted Least-squares (IRLS).
 
