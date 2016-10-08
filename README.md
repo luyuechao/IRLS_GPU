@@ -34,7 +34,8 @@ Install CUDA, OpenBLAS, MAGMA, Eigen3.
      In line 59, change "arch" and "code" compiler flag according to your GPU architecture.
        Refer to https://en.wikipedia.org/wiki/CUDA
      (e.g. GTX TITAN X Maxwell which has Compute ability 5.2 shall be set "arch" and "code" as arch=compute_52 and code=sm_52)
-    3.
+    
+    3. 
     ```
  mkdir build && cd build
  cmake ..
