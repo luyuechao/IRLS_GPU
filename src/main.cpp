@@ -31,7 +31,13 @@ int main(int argc, char *argv[]) {
     fs << m <<","<< n << ",";
     cout << "M = " << m << ", N = " << n << endl;
     const int MAX_ITER = 1000;
-    const float TOL = 1.0e-6 * n;
+    float TOL;
+    if(argc == 4){
+        TOL = atof(argv[3]);
+        cout << "The input tolerance is " << TOL << endl;
+    }else{
+        TOL = 1.0e-6 * n;// without tolerance arugement
+    }
     const Eigen::MatrixXf A = Eigen::MatrixXf::Random(m, n);
     const Eigen::VectorXf X_GT = Eigen::VectorXf::Random(n); // Ground truth of X
     Eigen::VectorXf b = A * X_GT;

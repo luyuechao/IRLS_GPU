@@ -21,8 +21,8 @@ float L1_norm_cuda(const Eigen::MatrixXf &A, const Eigen::VectorXf &b, Eigen::Ve
     
     float gpu_error, cpu_error, error, Anorm, work[1];
     float c_one = MAGMA_S_ONE;
-    float  c_neg_one = MAGMA_S_NEG_ONE;
-    float *h_A, *h_A2, *h_B, *h_X, *h_R, *tau, *h_work, tmp[1];
+    float c_neg_one = MAGMA_S_NEG_ONE;
+    float *h_work, tmp[1];
     magmaFloat_ptr d_A, d_B;
     magma_int_t M, N, size, nrhs, lda, ldb, ldda, lddb, min_mn, max_mn, nb, info;
     magma_int_t lworkgpu, lhwork, lhwork2;
@@ -166,12 +166,18 @@ float L1_norm_cuda(const Eigen::MatrixXf &A, const Eigen::VectorXf &b, Eigen::Ve
     checkCudaErrors(cudaMemcpy(host_b, dev_x, N * sizeof(float), cudaMemcpyDeviceToHost));
     cudaDeviceSynchronize();
     x = Eigen::Map<Eigen::VectorXf>(host_b, N);
-
+    
+    magma_free_cpu(h_work);
     cublasDestroy(cublasH);
-    cudaFree(dev_A);
-    cudaFree(dev_b);
-    cudaFree(tau);
+    cudaFreeHost(host_A); cudaFreeHost(host_b); cudaFreeHost(host_d);
+    cudaFreeHost(host_W); cudaFreeHost(host_C); cudaFreeHost(host_x);
+    cudaFreeHost(host_x_old);
+    
+    cudaFree(dev_A); cudaFree(dev_b); cudaFree(dev_x); cudaFree(dev_x_old);
+    cudaFree(dev_W); cudaFree(dev_C); cudaFree(dev_d);
+    
     cudaFree(work);
+    
 
     return residual;
 }                                                                                
